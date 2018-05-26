@@ -6,7 +6,8 @@ import time
 import cv2
 import face_recognition
 import numpy as np
-import label_image
+
+from mosaicer import label_image
 
 
 def batch_job(frames, images, positions, face_counts, batch_size):
@@ -104,12 +105,16 @@ def capture(video_path, train_dir, label=None):
 def compare_face(images, new_image):
     if not images:
         return False
-
+    #Index Error Handling
     image_encodings = []
     for image in images:
-        image_encoding = face_recognition.face_encodings(image)
-        if image_encoding:
-            image_encodings.append(image_encoding[0])
+        try:
+            image_encoding = face_recognition.face_encodings(image)
+            if image_encoding:
+             image_encodings.append(image_encoding[0])
+        except IndexError:
+            print("I wasn't able to locate any faces in at least one of the images. Check the image files. Aborting...")
+            quit()
     unknown_encoding = face_recognition.face_encodings(new_image)
     if not unknown_encoding:
         return False
