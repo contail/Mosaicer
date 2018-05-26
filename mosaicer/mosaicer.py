@@ -6,9 +6,7 @@ import time
 import cv2
 import face_recognition
 import numpy as np
-
-from mosaicer import label_image
-
+import label_image
 
 def batch_job(frames, images, positions, face_counts, batch_size):
     batch_of_face_locations = face_recognition.batch_face_locations(frames, number_of_times_to_upsample=0,
